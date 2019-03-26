@@ -150,7 +150,7 @@ int* Common_Dijkstra(int p_start,int p_end)
 	//int a[10]={0}; //test
 	int path[100];		//最短路，为路口数据，参数需要修改
 	int cross_N=0,cross_N_next=0,road_N=0;
-	
+	int num_4[4]={0};   //顶点相邻4个点的指针
 	for (int i=0;i<10000;i++) //参数需要修改，与路口数量匹配
 	{
 		if( Cross_group[i].dis_num(1)==p_start)	//找到对应的路口id
@@ -160,7 +160,11 @@ int* Common_Dijkstra(int p_start,int p_end)
 			break;
 		}
 	}
-	for (int j=0;j<4;j++)   
+	
+	int min_W=100000://最小顶点权重
+	int min_W_N=0;//最小顶点指针
+	
+	for (int j=0;j<4;j++)   //4条路
 	{
 		for (int i=0;i<10000;i++)   
 		{
@@ -171,18 +175,28 @@ int* Common_Dijkstra(int p_start,int p_end)
 					if(Road_group[i].dis_num(6)==Cross_group[ii].dis_num(1))//找到对应边终点的路口id
 					{
 						cross_N_next=ii;
+						num_4[j]=ii;
 						break;
 					}
 				}
 					
 				if((Cross_group[cross_N].dis_num(6)+Road_group[i].dis_num(2))<=Cross_group[cross_N_next].dis_num(6))//判断顶点权重加上边长后 与 边终点路口权重的大小
-						Cross_group[cross_N_next].set_W_Dij(Cross_group[cross_N].dis_num(6)+Road_group[i].dis_num(2));////更新路口权重
+				{
+					Cross_group[cross_N_next].set_W_Dij(Cross_group[cross_N].dis_num(6)+Road_group[i].dis_num(2));////更新路口权重
+				}
+				//存储最小权重的顶点指针
+				if(Cross_group[cross_N_next].dis_num(6)<=min_W)
+				{
+					min_W=Cross_group[cross_N_next].dis_num(6);
+					min_W_N=cross_N_next;
+				}
+				
 			}
 		
-		}
-		
-		
+		}	
 	}
+	//找到最小权值的顶点
+	
 	
 	
 	
