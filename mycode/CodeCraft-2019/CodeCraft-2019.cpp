@@ -98,8 +98,8 @@ void Car::dis_num()//测试用
         private:
         int cross_id=0,cross_roadId_1=0,cross_roadId_2=0,cross_roadId_3=0,cross_roadId_4=0,cross_W_Dij=10000;  //Dijkstra 算法的顶点标号大小，初始尽量大
 		int cross_roadId[4]={0};//数组表示，与上面重复定义，有时间在修改
-		int pro_cross_num=-1;//前驱顶点的指针
-		int pro_path=-1;//前驱路的id
+		int pro_cross_num=-10;//前驱顶点的指针
+		int pro_path=-10;//前驱路的id
     };
     
 void Cross::set_num(int a,int b,int c,int d,int e)
@@ -159,6 +159,7 @@ int* Common_Dijkstra(int p_start,int p_end)
 	int path[100]={0};		//最短路，为路口数据，参数需要修改
 	int Cro_temp[100]={0};//存储遍历的顶点
 	bool flag_c=0;
+	bool flag_s=0;//判断点是否在S中
 	int k=0;//path角标
 	int cross_N=0,cross_N_next=0,road_i=0;
 	for (int i=0;i<10000;i++) //参数需要修改，与路口数量匹配
@@ -233,22 +234,88 @@ int* Common_Dijkstra(int p_start,int p_end)
 				Cross_group[cross_N_next].set_pro_cross_num(Cross_group[cross_N].dis_num(1));//更新前驱
 				Cross_group[cross_N_next].set_pro_path(Cross_group[cross_N].dis_num(j+2));
 			}
-			//存储最小权重的顶点指针
-			if(Cross_group[cross_N_next].dis_num(6)<=min_W)
-			{
-				min_W=Cross_group[cross_N_next].dis_num(6);
-				min_W_N=cross_N_next;
-			}
-			Cro_temp[k]=min_W_N;//存入已经找到的最小顶点的指针
+			
+		//	Cro_temp[k]=min_W_N;//存入已经找到的最小顶点的指针
 			//path[k]=(int)Road_group[road_i].dis_num(1);
 			//cout<<Cro_temp[k]<<endl;
-			cout<<k<<endl;
 		}
+		//在V-S中找到权重最小的点，作为下一个定点
+
+		for(int i=1;i<10000;i++)
+		{
+			for(int j=0;j<100;j++)//参数需要修改，与Cro_temp长度相同
+			{
+				if(i==Cro_temp[j])//出去S中的点	
+				{
+					flag_s=1;
+					break;
+				}	
+			}
+			if(flag_s==1)
+			{
+				flag_s=0;
+				continue;
+			}
+			if(Cross_group[i].dis_num(6)<=min_W)
+			{
+				min_W=Cross_group[i].dis_num(6);
+				min_W_N=i;
+			}
+		}
+		Cro_temp[k]=min_W_N;
 		cross_N=min_W_N;//更新路口id
+		cout<<k<<endl;
 		k++;
 	}	
-//	for(int i=0;path[i]!=0;i++)
-//		cout<< path[i] <<endl;
+	//从终点倒推出路径
+	int path_b_a[100]={0};//路径反顺序
+	int p_end_temp=0;
+	p_end_temp=p_end;
+	flag_s=0;//不新声明了，反正和上面不相互影响
+	for(int j=0;j<100;j++)//参数需要修改，与path一致
+	{
+		for(int i=0;i<10000;i++)//参数需要修改，与路口数量匹配
+		{
+			if(Cross_group[i].dis_num(1)==p_end_temp)
+			{
+				if(Cross_group[i].dis_num(7)!=-10)//推到起点
+				{
+					p_end_temp=Cross_group[i].dis_num(7);
+				}
+				else
+				{
+					flag_s=0;
+					break;
+				}
+				path_b_a[j]=Cross_group[i].dis_num(8);//注意这里在到起点时会存入-100，便于路径反向
+				break;
+			}
+			if(flag_s==1)//到起点，结束循环
+			{
+				flag_s=0;
+				break;
+			}
+				
+		}	
+	}
+//将路径变成正向
+int path_a_b[100]={0};
+for(int i=0;i<100;i++)//参数需要修改，与path一致
+{
+	if(path_b_a[i]==-100)
+	{
+		for(int j=0;j<i;j++)
+		{
+			path_a_b[j]=path_b_a[i-j-1];
+		}
+		break;
+	}	
+}
+	
+//	for(int i=0;i<100;i++)
+//		cout<< path_b_a[i] <<endl;
+	for(int i=0;path_a_b[i]!=0;i++)
+		cout<< path_a_b[i] <<endl;
 int a[3]={0};
 	return a;
 }
