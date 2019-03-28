@@ -542,6 +542,7 @@ fin2.close();
 
 //***********************************************************
 	// TODO:process
+	
 	int path_a_b[n_path]={0};
 	int p_start=0,p_end=0;
 	int time_step=0;//发车时间调整参数
@@ -560,7 +561,8 @@ fin2.close();
 		
 		outf<<'(';
 		outf<<Car_group[j].dis_num(1)<<',';
-		outf<<Car_group[j].dis_num(5);
+		time_step=int(j/1000);
+		outf<<(Car_group[j].dis_num(5)+10* time_step);
 		for(int i=0;path_a_b[i]!=0;i++)
 		{
 				outf<<','<<path_a_b[i];
