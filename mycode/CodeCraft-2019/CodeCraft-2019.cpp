@@ -544,9 +544,10 @@ fin2.close();
 	// TODO:process
 	int path_a_b[n_path]={0};
 	int p_start=0,p_end=0;
-	Common_Dijkstra(14,8,path_a_b);
-		for(int i=0;path_a_b[i]!=0;i++)
-		cout<< path_a_b[i] <<endl;
+	int time_step=0;//发车时间调整参数
+//	Common_Dijkstra(14,8,path_a_b);
+//		for(int i=0;path_a_b[i]!=0;i++)
+//		cout<< path_a_b[i] <<endl;
 	
 	// TODO:write output file
 	ofstream outf; 
@@ -572,6 +573,7 @@ fin2.close();
 	}
 	outf.close();
 
+	
 	return 0;
 }
 
