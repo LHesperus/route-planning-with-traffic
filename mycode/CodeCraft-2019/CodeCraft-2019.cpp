@@ -30,13 +30,6 @@ void Road::set_num(int a,int b,int c,int d,int e,int f,int g)
 		}
 int Road::dis_num(int n)//测试用
 {
-//    cout<<road_id<<endl;
-//    cout<<road_length<<endl;
-//    cout<<road_speed<<endl;
-//    cout<<road_channel<<endl;
-//    cout<<road_from<<endl;
-//    cout<<road_to<<endl;
-//    cout<<road_isDuplex<<endl;
 	switch(n)
 	{
 		case 1:
@@ -63,9 +56,9 @@ int Road::dis_num(int n)//测试用
     {
 		public:
 		void set_num(int a,int b,int c,int d,int e);
-		void dis_num();
+		int dis_num(int a);
         private:
-        int car_id,car_from,car_to,car_speed,car_planTime;  
+        int car_id=0,car_from,car_to,car_speed,car_planTime;  
     };
     
 void Car::set_num(int a,int b,int c,int d,int e)
@@ -76,14 +69,24 @@ void Car::set_num(int a,int b,int c,int d,int e)
 			car_speed=d;
 			car_planTime=e;
 		}
-void Car::dis_num()//测试用
+int Car::dis_num(int n)//测试用
 {
-	cout<<car_id<<endl;
-    cout<<car_from<<endl;
-    cout<<car_to<<endl;
-    cout<<car_speed<<endl;
-    cout<<car_planTime<<endl;
-}
+	switch(n)
+	{
+		case 1:
+			return car_id;
+		case 2:
+			return car_from;
+		case 3:
+			return car_to;
+		case 4:
+			return car_speed;
+		case 5:
+			return car_planTime;	
+        default:
+            return -1;
+	}
+};
 
 //*****************************************************
 //#(id,roadId,roadId,roadId,roadId)没有路则值为-1
@@ -120,11 +123,6 @@ void Cross::set_pro_path(int a){pro_path=a;}
 
 int Cross::dis_num(int n)//测试用
 {
-//	cout<<cross_id<<endl;
-//    cout<<cross_roadId_1<<endl;
-//    cout<<cross_roadId_2<<endl;
-//    cout<<cross_roadId_3<<endl;
-//    cout<<cross_roadId_4<<endl;
 	switch(n)
 	{
 		case 1:
@@ -154,33 +152,34 @@ static Road Road_group[10000];    //路
 static Car Car_group[10000];		//车
 //Dijkstra算法找到两点最短路径，返回数组
 
-int* Common_Dijkstra(int p_start,int p_end)
+void Common_Dijkstra(int p_start,int p_end,int path_a_b[100])
 {	
-	int path[100]={0};		//最短路，为路口数据，参数需要修改
 	int Cro_temp[100]={0};//存储遍历的顶点
 	bool flag_c=0;
 	bool flag_s=0;//判断点是否在S中
+	bool flag_r=0;//如果路口相连的边过不去，就置1
 	int k=0;//path角标
-	int cross_N=0,cross_N_next=0,road_i=0;
+	int cross_N=0,cross_N_next =0,road_i=0;
 	for (int i=0;i<10000;i++) //参数需要修改，与路口数量匹配
 	{
-		if( Cross_group[i].dis_num(1)==p_start)	//找到对应的路口id
+		if( Cross_group[i].dis_num(1)== p_start)	//找到对应的路口id
 		{
-			cross_N=i;
+			cross_N = i;
 			Cross_group[cross_N].set_W_Dij(0);
 			break;
 		}
 	}
 	Cross_group[cross_N].set_pro_cross_num(-100);//参数需要修改，先设置起点无前驱，写成-100
 	Cross_group[cross_N].set_pro_path(-100);
+	Cro_temp[0]= cross_N;//起点存入S
+	cout<<"0:"<<Cro_temp[0]<<endl;
 
 	int min_W=100000;//最小顶点权重
 	int min_W_N=0;//最小顶点指针
 		
-	//while(Cross_group[cross_N_next].dis_num(1)!=p_end)
-	while(k<100)
+	while(cross_N_next ==0||Cross_group[cross_N_next].dis_num(1)!= p_end)
+	//while(k<100)
 	{
-		cout<<Cross_group[cross_N_next].dis_num(1)<<endl;
 		min_W=100000;
 		min_W_N=0;
 		for (int j=0;j<4;j++)   //4条路
@@ -189,28 +188,55 @@ int* Common_Dijkstra(int p_start,int p_end)
 			{
 				continue;
 			}
+		//	cout<<"4:"<<Cross_group[cross_N].dis_num(j+2)<<endl;
 			for (int i=1;i<10000;i++)   
 			{
 
+		//		cout<<"11:"<<Road_group[i].dis_num(1)<<endl;
+
 				if (Road_group[i].dis_num(1)==Cross_group[cross_N].dis_num(j+2))//找到路口相连边的id
 				{	
-					road_i=i;
-					for (int ii=1;ii<10000;ii++)
+			//		cout<<"Road_group[i].dis_num(1)"<<Road_group[i].dis_num(1)<<endl;
+					if((Road_group[i].dis_num(7)==0&&Road_group[i].dis_num(5)==Cross_group[cross_N].dis_num(1))||(Road_group[i].dis_num(7)==1))//单相且from为路口，或双向
 					{
-						if(Road_group[i].dis_num(6)==Cross_group[ii].dis_num(1))//找到对应边终点的路口id
+				//		cout<<"Road_group[i].dis_num(1)"<<Road_group[i].dis_num(1)<<endl;
+						road_i =i;
+						for (int ii=1;ii<10000;ii++)
 						{
-							cross_N_next=ii;
-							break;
-						}
+						//	cout<<Cross_group<<Cross_group[ii].dis_num(1)<<endl;
+						//	cout<<"Road_group[i].dis_num(6)"<<Road_group[i].dis_num(6)<<endl;
+							//找到对应边终点的路口id,排除下一个顶点与当前定点相同的情况
+							if((Road_group[i].dis_num(5)==Cross_group[ii].dis_num(1)||Road_group[i].dis_num(6)==Cross_group[ii].dis_num(1))&&Cross_group[ii].dis_num(1)!=Cross_group[cross_N].dis_num(1))
+							{			
+								cross_N_next =ii;
+							//	cout<<"10:"<<cross_N_next<<endl;
+								break;
+							}
+						}					
+					}
+					else
+					{
+						flag_r=1;
+						break;//路口相连的边是单行且不通
 					}
 					break;
 				}
 			}
+			if(flag_r==1)
+			{
+				flag_r=0;
+				continue;//当前边不通，找下一条边
+			}
+	//		cout<<"7:"<<cross_N_next<<endl;
 			for(int i=0;i<100;i++)//参数需要修改，与Cro_temp长度相同
 			{
-				if(cross_N_next==Cro_temp[i])//避免搜索重复顶点	
+				//	cout<<"cross_N_next"<<cross_N_next<<endl;
+				//	cout<<"Cro_temp[i]"<<Cro_temp[i]<<endl;
+				if(cross_N_next == Cro_temp[i])//避免搜索重复顶点	
 				{
+
 					flag_c=1;
+				//	cout<<"9:"<<flag_c<<endl;
 					break;	
 				}
 			}
@@ -219,12 +245,13 @@ int* Common_Dijkstra(int p_start,int p_end)
 				flag_c=0;
 				continue;
 			}
+		//	cout<<"8:"<<cross_N_next<<endl;
+					//		cout<<"6:"<<Cross_group[cross_N_next].dis_num(1)<<endl;
 			if(Cross_group[cross_N_next].dis_num(1)==p_end)//判断是否找到终点
 			{
-				path[k]=Cross_group[cross_N].dis_num(j+2);
+		//		cout<<"5:"<<Cross_group[cross_N_next].dis_num(1)<<endl;
 				Cross_group[cross_N_next].set_pro_cross_num(Cross_group[cross_N].dis_num(1));//更新前驱
 				Cross_group[cross_N_next].set_pro_path(Cross_group[cross_N].dis_num(j+2));
-				cout<<Cross_group[cross_N_next].dis_num(7)<<endl;
 				break;
 			}
 			
@@ -234,18 +261,13 @@ int* Common_Dijkstra(int p_start,int p_end)
 				Cross_group[cross_N_next].set_pro_cross_num(Cross_group[cross_N].dis_num(1));//更新前驱
 				Cross_group[cross_N_next].set_pro_path(Cross_group[cross_N].dis_num(j+2));
 			}
-			
-		//	Cro_temp[k]=min_W_N;//存入已经找到的最小顶点的指针
-			//path[k]=(int)Road_group[road_i].dis_num(1);
-			//cout<<Cro_temp[k]<<endl;
 		}
 		//在V-S中找到权重最小的点，作为下一个定点
-
 		for(int i=1;i<10000;i++)
 		{
 			for(int j=0;j<100;j++)//参数需要修改，与Cro_temp长度相同
 			{
-				if(i==Cro_temp[j])//出去S中的点	
+				if(i== Cro_temp[j])//去除S中的点	
 				{
 					flag_s=1;
 					break;
@@ -262,10 +284,11 @@ int* Common_Dijkstra(int p_start,int p_end)
 				min_W_N=i;
 			}
 		}
-		Cro_temp[k]=min_W_N;
+
 		cross_N=min_W_N;//更新路口id
-		cout<<k<<endl;
+		//cout<<"3:"<< cross_N<<endl;
 		k++;
+		Cro_temp[k]=min_W_N;
 	}	
 	//从终点倒推出路径
 	int path_b_a[100]={0};//路径反顺序
@@ -294,30 +317,25 @@ int* Common_Dijkstra(int p_start,int p_end)
 			{
 				flag_s=0;
 				break;
-			}
-				
+			}			
 		}	
 	}
 //将路径变成正向
-int path_a_b[100]={0};
-for(int i=0;i<100;i++)//参数需要修改，与path一致
+for(int i=0;i<100;i++)
 {
-	if(path_b_a[i]==-100)
-	{
-		for(int j=0;j<i;j++)
-		{
-			path_a_b[j]=path_b_a[i-j-1];
-		}
-		break;
-	}	
+	path_a_b[i]=0;
 }
-	
-//	for(int i=0;i<100;i++)
-//		cout<< path_b_a[i] <<endl;
-	for(int i=0;path_a_b[i]!=0;i++)
-		cout<< path_a_b[i] <<endl;
-int a[3]={0};
-	return a;
+	for(int i=0;i<100;i++)//参数需要修改，与path一致
+	{
+		if(path_b_a[i]==-100)
+		{
+			for(int j=0;j<i;j++)
+			{
+				path_a_b[j]=path_b_a[i-j-1];
+			}
+			break;
+		}	
+	}
 }
 int main(int argc, char *argv[])
 {
@@ -511,19 +529,43 @@ a=0;b=0;c=0;d=0;e=0;
 }
 fin2.clear();
 fin2.close();
-//Cross_group[4].dis_num();//测试用
+
+//cout<<Cross_group[0].dis_num(1)<<endl;//测试用
+
 //**********************************************************
 
 //***********************************************************
 	// TODO:process
-	int* p;
-p=Common_Dijkstra(1,9);
-	cout<< p <<endl;
-	//cout< p->1 <<p->2 << p->3 <<endl;
-//	cout<< Cross_group[14].dis_num(8)<<endl;
-//	cout<< Cross_group[14].dis_num(7)<<endl;
-	// TODO:write output file
+	int path_a_b[100]={0};
+	int p_start=0,p_end=0;
+	Common_Dijkstra(14,8,path_a_b);
+		for(int i=0;path_a_b[i]!=0;i++)
+		cout<< path_a_b[i] <<endl;
 	
+	ofstream outf; 
+	outf.open("../config/answer.txt");
+	for(int j=1;Car_group[j].dis_num(1)!=0;j++)
+	{
+		p_start=Car_group[j].dis_num(2);
+		p_end = Car_group[j].dis_num(3);
+		Common_Dijkstra(p_start,p_end,path_a_b);
+		
+		outf<<'(';
+		outf<<Car_group[j].dis_num(1);
+		for(int i=0;path_a_b[i]!=0;i++)
+		{
+				outf<<','<<path_a_b[i];
+		}
+		outf<<')'<<endl;
+		for(int i=1;i<10000;i++)//初始权重
+		{
+			Cross_group[i].set_W_Dij(100000);
+		}
+	}
+	outf.close();
+	cout<< Cross_group[14].dis_num(8)<<endl;
+	cout<< Cross_group[14].dis_num(7)<<endl;
+	// TODO:write output file
 	return 0;
 }
 
