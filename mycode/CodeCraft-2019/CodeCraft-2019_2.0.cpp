@@ -297,6 +297,9 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			path_weight=int(Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4))\
 			*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
 			*W_block;//抽象的权重计算公式
+			
+			//path_weight=(abs(car_speed-Road_group[road_i].dis_num(3))+1)*W_block;//不考虑路长
+			
 			//cout<<"Road_group[road_i].dis_num(2)/min_speed="<<Road_group[road_i].dis_num(2)/min_speed<<endl;
 			//cout<<"abs(car_speed-Road_group[road_i].dis_num(3)"<<abs(car_speed-Road_group[road_i].dis_num(3))<<endl;
 			//cout<<"channel"<<Road_group[road_i].dis_num(4)<<endl;
@@ -609,24 +612,24 @@ fin2.close();
 		
 		outf<<'(';
 		outf<<Car_group[j].dis_num(1)<<',';
-		time_step=int(j/200);
+		time_step=int(j/230);
 		//最后出发的车提前
 		//{待写}
 		//路短的先走
 		//{Car_group[j].dis_num(6)}
-		if(Car_group[j].dis_num(4)<=4)//快车先走
-		{
-			outf<<(10+10* time_step+8);	
-		}
-		else if(Car_group[j].dis_num(4)>4&&Car_group[j].dis_num(4)<=6)
-		{
-			outf<<(10+10* time_step+4);
-		}
-		else
-		{
-			outf<<(10+10* time_step+0);
-		}
-	//	outf<<(Car_group[j].dis_num(5)+10* time_step);
+	//	if(Car_group[j].dis_num(4)<=4)//快车先走
+	//	{
+	//		outf<<(10+10* time_step+8);	
+	//	}
+	//	else if(Car_group[j].dis_num(4)>4&&Car_group[j].dis_num(4)<=6)
+	//	{
+	//		outf<<(10+10* time_step+4);
+	//	}
+	//	else
+	//	{
+	//		outf<<(10+10* time_step+0);
+	//	}
+		outf<<(Car_group[j].dis_num(5)+10* time_step);
 		for(int i=0;path_a_b[i]!=0;i++)
 		{
 				outf<<','<<path_a_b[i];
