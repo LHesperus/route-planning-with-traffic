@@ -21,10 +21,13 @@ class Road
 	public:
 	void set_num(int a,int b,int c,int d,int e,int f,int g);
 	int dis_num(int n);
+	float dis_beta();
 	void set_car_N(int a);
+	float set_beta(int car_N,int road_isDuplex,int road_length,int road_channel);
     private:
     int road_id=0,road_length=10000,road_speed=0,road_channel=0,road_from=0,road_to=0,road_isDuplex=1; 
     int car_N=0;//路中车辆计数	
+	float beta=0;//拥堵系数，车数/路容量
 };
     
 void Road::set_num(int a,int b,int c,int d,int e,int f,int g)
@@ -38,6 +41,11 @@ void Road::set_num(int a,int b,int c,int d,int e,int f,int g)
 	road_isDuplex=g;
 }
 void Road::set_car_N(int a){car_N = a;};//车辆数
+float Road::set_beta(int car_N,int road_isDuplex,int road_length,int road_channel)
+	{
+	beta=(car_N+0.01)/((road_isDuplex+1)*road_length*road_channel+0.01);
+	return beta;
+	};
 int Road::dis_num(int n)//测试用
 {
 	switch(n)
@@ -62,6 +70,10 @@ int Road::dis_num(int n)//测试用
             return -1;
 	}
 };
+float Road::dis_beta()
+{
+	return beta;
+}
 //*****************************************************
 //#(id,from,to,speed,planTime)
 class Car
@@ -294,10 +306,14 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			}
 			//cout<<"Road_group[road_i].dis_num(8)"<<Road_group[road_i].dis_num(8)<<endl;
 			//cout<<"sum_path"<<sum_path<<endl;
-			path_weight=int(Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4))\
+			//path_weight=int(Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4))\
 			*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
-			*W_block;//抽象的权重计算公式
-			
+			*W_block;//抽象的权重计算公式1
+			path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
+			*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
+			*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式2,拥堵系数
+			//cout<<Road_group[road_i].dis_beta()<<endl;
+			//cout<<path_weight<<endl;
 			//path_weight=(abs(car_speed-Road_group[road_i].dis_num(3))+1)*W_block;//不考虑路长
 			
 			//cout<<"Road_group[road_i].dis_num(2)/min_speed="<<Road_group[road_i].dis_num(2)/min_speed<<endl;
@@ -367,6 +383,7 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 					if(Road_group[ii].dis_num(1)==Cross_group[i].dis_num(8))
 					{
 						Road_group[ii].set_car_N(Road_group[ii].dis_num(8)+1);
+						Road_group[ii].set_beta(Road_group[ii].dis_num(8),Road_group[ii].dis_num(7),Road_group[ii].dis_num(2),Road_group[ii].dis_num(4));
 					}
 				}
 				break;
