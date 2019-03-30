@@ -100,12 +100,24 @@ beta是变量中唯一一个浮点数，使用时要注意。
 代码见：[exam8.0](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0)文件夹的除了刚才提到的子文件夹中
 
 ### 12
-快到截止时间下午5点了，不打算再改了，
+快到截止时间下午5点了，不打算再改了。 <br>
 最终提交的代码见：
-[exam-final](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-final)
-就是之前最短调度时间的
-[exam-7.0/1-6-1-succeed-1430+1418_2500_50](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-7.0/1-6-1-succeed-1430%2B1418_2500_50)
+[exam-final](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-final) <br>
+也就是之前最短调度时间的
+[exam-7.0/1-6-1-succeed-1430+1418_2500_50](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-7.0/1-6-1-succeed-1430%2B1418_2500_50) <br>
 最终调度时间：1430+1418=2848。
+
+## 一些未实现的想法：
+如果有充分的时间做这个题的话，可能会写出以下方案
+### 1 判题器+动态调度+群智能算法优化参数：
+如果能实时测出道路的车辆信息，决策将会十分准确，
+利用判题器算出一组参数的输出调度时间，再用群智能算法优化参数，相信可以得到较优的路径。
+### 2 最小生成树
+看了任务书中关于形成死锁的情形，有一种是环路，那么把整个地图的所有环都去掉，不就会排除这种情况了吗？
+可以将地图-即连通图生成一个最小生成树，或最小生成森林，这样就无环。
+当然需要注意，路的单双向问题，以及不同联通块之间的路线。
+### 3 灵活的数据结构
+目前水平有限，只能用最基本的结构写，很不方便。熟练C++和数据结构后可以写出高效整洁的代码。
 
 
 ## 调试的各种版本 <br>
