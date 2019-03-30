@@ -3,3 +3,5 @@
 
 比赛做的比较晚，做的匆匆忙忙，规则都没来得及看全，28号开始写Dijkstra算法，写完拿1w car的地图测试，
 中途不会上传文件，耽搁了一些时间，后来第一次好使两张图跑了2200，成渝赛区排到58名
+![Image text](route-planning-with-traffic/message/1.png)
+
