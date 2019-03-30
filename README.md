@@ -108,12 +108,12 @@ beta是变量中唯一一个浮点数，使用时要注意。
 最终调度时间：1430+1418=2848。
 
 
+## 调试的各种版本 <br>
+![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/7.png)
 
-![调试的各种版本](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/7.png)
-
-官方的一些文件
+## 官方的一些文件
 [data](https://github.com/LHesperus/route-planning-with-traffic/tree/master/official%20document)
 
-网站调试截图
+## 网站调试截图 <br>
 ![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/6.png)
 
