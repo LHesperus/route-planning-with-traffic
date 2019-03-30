@@ -1,5 +1,10 @@
 # route planning with traffic
-队伍：道路千万条请走这一条
+## 队伍：道路千万条请走这一条
+
+# 整体思想：<br>
+## 快车上高速，慢车走短路; <br>
+## 快慢分批走，谁慢就等谁；<br>
+## 道多优先进，车多请绕行；<br>
 
 比赛做的比较晚，做的匆匆忙忙，规则都没来得及看全，28号开始写Dijkstra算法，写完拿1w car的地图测试，
 中途不会上传文件，耽搁了一些时间，后来第一次好使两张图跑了2200，成渝赛区排到58名
@@ -32,7 +37,7 @@ beta是变量中唯一一个浮点数，使用时要注意。
 这时已经29号晚上过10点了，官方测试通道关闭，好多想法都没来得及写：
 
 
-30号：
+# 30号：
 9点：下载数据，大致车6w+,路250左右，路口150左右，车速，6-16，路长20-60，限速8-15，出发时间0-50，双向路较多
 分析可知，与测试地图相比，道路容量增加，车速增加，车辆大概原来的6倍，肯定在6*(测试地图的时间=600)=3600内跑完，
 最开始设定每发230辆车，发车时间增加10，调度时间大概在6w/230*10=2608附近，
@@ -69,13 +74,34 @@ beta是变量中唯一一个浮点数，使用时要注意。
 2600 50，测试结果：2地图失败
 代码见：[exam-7.0/1-6-2_map2failed-2600_50](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-7.0/1-6-2_map2failed-2600_50)
 
+这是考虑'快慢分批走',思路是：快车，慢车一起走的话，车速低的容易堵住车速高的，可以将其按速度设置为不同的发车时间
+但是，在最终发车时间较小的情况下，写了两个都失败了
+代码见:
+[exam-8.0/1-7-0-failed-1388+inf_550_10-速度过渡](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0/1-7-0-failed-1388%2Binf_550_10-%E9%80%9F%E5%BA%A6%E8%BF%87%E6%B8%A1)
+[exam-8.0/1-7-1_failed-1299-inf_3000_50速度过渡](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0/1-7-1_failed-1299-inf_3000_50%E9%80%9F%E5%BA%A6%E8%BF%87%E6%B8%A1)
+
+又想到因为速度慢的走的时间长，故应该'谁慢就等谁'，考虑速度不等间隔发车，车快的发车间距进一些，车慢的发车间距远一些
+测试结果：1497+1446，感觉没起多少效果
+代码见:[exam-8.0/1-7-2-succeed-1497+1446_1500_30_速度不等间隔过渡](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0/1-7-2-succeed-1497%2B1446_1500_30_%E9%80%9F%E5%BA%A6%E4%B8%8D%E7%AD%89%E9%97%B4%E9%9A%94%E8%BF%87%E6%B8%A1)
+
+在此基础上，调整发车数等参数，均失败
+代码见：[exam8.0](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0)文件夹的除了刚才提到的子文件夹中
 
 
+快到截止时间下午5点了，不打算再改了，
+最终提交的代码见：
+[exam-final](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-final)
+就是之前最短调度时间的
+[exam-7.0/1-6-1-succeed-1430+1418_2500_50](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-7.0/1-6-1-succeed-1430%2B1418_2500_50)
+最终调度时间：1430+1418=2848。
 
 
-最终提交的代码route-planning-with-traffic/exam/exam-final/
+调试的各种版本
+![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/7.png)
 
-整体思想：
-快车上高速，慢车走短路;
-快慢分批走，谁慢就等谁；
-道多有先进，车多请绕行；
+官方的一些文件
+[data](https://github.com/LHesperus/route-planning-with-traffic/tree/master/official%20document)
+
+网站调试截图
+![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/6.png)
+
