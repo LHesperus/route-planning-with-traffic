@@ -8,7 +8,7 @@
 
 
 * [exam]-比赛提交的各种版本
-* [message]-相关截图
+* [message]-相关截图,各赛区成绩
 * [mycode]-赛前的测试代码
 * [official document]-官方文件
 
@@ -137,4 +137,7 @@ beta是变量中唯一一个浮点数，使用时要注意。
 
 ## 网站调试截图 <br>
 ![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/6.png)
+
+## 最终成绩 <br>
+![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/%E6%88%90%E6%B8%9D%E8%B5%9B%E5%8C%BA%E6%88%90%E7%BB%A9.png)
 
