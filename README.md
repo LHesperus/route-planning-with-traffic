@@ -6,6 +6,12 @@
 ## 快慢分批走，谁慢就等谁；<br>
 ## 道多优先进，车多请绕行；<br>
 
+
+* [exam]-比赛提交的各种版本
+* [message]-相关截图
+* [mycode]-赛前的测试代码
+* [official document]-官方文件
+
 比赛做的比较晚，做的匆匆忙忙，规则都没来得及看全，28号开始写Dijkstra算法，写完拿1w car的地图测试，
 中途不会上传文件，耽搁了一些时间，后来第一次好使两张图跑了2200，成渝赛区排到58名
 ![Image text](https://github.com/LHesperus/route-planning-with-traffic/blob/master/message/2.png)
@@ -84,14 +90,14 @@ beta是变量中唯一一个浮点数，使用时要注意。
 代码见：[exam-7.0/1-6-2_map2failed-2600_50](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-7.0/1-6-2_map2failed-2600_50)
 
 ### 9
-这时考虑`快慢分批走`,思路是：快车，慢车一起走的话，车速低的容易堵住车速高的，可以将其按速度设置为不同的发车时间
+这时考虑*快慢分批走*,思路是：快车，慢车一起走的话，车速低的容易堵住车速高的，可以将其按速度设置为不同的发车时间
 但是，在最终发车时间较小的情况下，写了两个都失败了
 代码见:
 [exam-8.0/1-7-0-failed-1388+inf_550_10-速度过渡](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0/1-7-0-failed-1388%2Binf_550_10-%E9%80%9F%E5%BA%A6%E8%BF%87%E6%B8%A1)
 [exam-8.0/1-7-1_failed-1299-inf_3000_50速度过渡](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0/1-7-1_failed-1299-inf_3000_50%E9%80%9F%E5%BA%A6%E8%BF%87%E6%B8%A1)
 
 ### 10
-又想到因为速度慢的走的时间长，故应该`谁慢就等谁`，考虑速度不等间隔发车，车快的发车间距进一些，车慢的发车间距远一些
+又想到因为速度慢的走的时间长，故应该*谁慢就等谁*，考虑速度不等间隔发车，车快的发车间距进一些，车慢的发车间距远一些
 测试结果：1497+1446，感觉没起多少效果
 代码见:[exam-8.0/1-7-2-succeed-1497+1446_1500_30_速度不等间隔过渡](https://github.com/LHesperus/route-planning-with-traffic/tree/master/exam/exam-8.0/1-7-2-succeed-1497%2B1446_1500_30_%E9%80%9F%E5%BA%A6%E4%B8%8D%E7%AD%89%E9%97%B4%E9%9A%94%E8%BF%87%E6%B8%A1)
 
