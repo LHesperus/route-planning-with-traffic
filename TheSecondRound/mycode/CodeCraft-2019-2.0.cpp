@@ -705,7 +705,7 @@ cout<<PresentAnswer_group[2].dis_pre_path(1)<<endl;//测试用
 		
 		outf<<'(';
 		outf<<Car_group[j].dis_num(1)<<',';
-		time_step=int(j/2500);
+		time_step=int(j/3000);
 
 		outf<<(Car_group[j].dis_num(5)+50* time_step + 900);
 		for(int i=0;path_a_b[i]!=0;i++)
