@@ -5,6 +5,7 @@
 
 #include <math.h>
 #include <cmath>
+#include "def_base_value.h"
 #include "def_base_Class.h"
 #include "find_path.h"
 using namespace std;

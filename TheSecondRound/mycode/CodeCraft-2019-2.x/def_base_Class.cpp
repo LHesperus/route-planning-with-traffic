@@ -152,7 +152,7 @@ void Answer::dis_path(int a[n_path])
 			a[i]=path[i];
 		}
 }
-
+//*******************************************************
 //read file
 void read_file(string &carPath,string &roadPath,string &crossPath,string &presetAnswerPath,Cross Cross_group[n_cross],Road Road_group[n_road],Car Car_group[n_car],PresentAnswer PresentAnswer_group[n_pre_ans])
 {
