@@ -21,6 +21,19 @@ class Road
     int road_id=0,road_length=10000,road_speed=0,road_channel=0,road_from=0,road_to=0,road_isDuplex=1; 
     int car_N=0;//路中车辆计数	
 	float beta=0;//拥堵系数，车数/路容量
+	//判题器相关
+	int N_now_car=0;//当前路中车辆数
+	struct Car_State car_state[2][n_max_channel][n_max_length_path];//每个方向每个通道每个车的状态
+};
+struct Car_State
+{
+	int  car_id=0;
+	int  car_order=0;//车辆是路中的第几个，距离终点最近的车次序是1
+	int  car_position=0;
+	int  car_speed=0;
+	int  car_priority=0;
+	bool StopOrWait=0;//stop--1，wait--0
+	int  car_S1=0;
 };
 //*****************************************************
 //#(id,from,to,speed,planTime, priority, preset)

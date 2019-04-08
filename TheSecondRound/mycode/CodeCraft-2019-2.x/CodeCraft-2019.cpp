@@ -20,6 +20,32 @@ using namespace std;
 
 extern int sum_path=0;//所有车总路数,注意车量级，防止溢出
 
+void drive_just_current_road()
+{//依次遍历每个方向的每个车道，从车道最前方依次向后遍历道路上的每辆车，将每辆车移动至终止位置或标定为等待状态
+	for(int i=1;i<n_path;i++)//每条路
+	{
+		for(int ii=0;ii<2;ii++)//每个方向
+		{
+			for(int iii=0;iii<=n_max_channel;iii++)//每个通道
+			{
+				for(int iiii=0;iiii<n_max_length_path;iiii++)//每辆车
+				Road_group[i].car_state[ii][iii][iiii]
+			}
+		}
+	}
+}
+
+
+void run
+
+
+
+
+
+
+
+
+
 int main(int argc, char *argv[])
 {
      cout << "Begin" <<  endl;
@@ -103,5 +129,29 @@ read_file(carPath,roadPath,crossPath,presetAnswerPath,Cross_group,Road_group,Car
 		}
 	}
 	outf.close();
+	//判题器
+	int time=0;
+	while(true)//调度所有车辆到达目的地
+	{
+		time++;
+		drive_just_current_road();//第一步，道路内车辆的标定与驱动
+		drive_car_init_list();//优先上路车辆
+		creat_car_sequence();//创建优先级队列
+		
+		if(!drive_car_in_wait_state())
+		{
+			//驱动所有等待车辆进入终止状态，死锁则退出
+			return false;
+		}
+		drive_car_init_list();//所有未上路车辆
+		if(isFinish())//所有车辆到达目的地
+		{
+			break;
+		}
+	}
+	
+	
+	
+	
 	return 0;
 }
