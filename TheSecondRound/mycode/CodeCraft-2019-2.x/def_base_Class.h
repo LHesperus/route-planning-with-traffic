@@ -16,25 +16,15 @@ class Road
 	int dis_num(int n);
 	float dis_beta();
 	void set_car_N(int a);
+	void set_id(int a);
 	float set_beta(int car_N,int road_isDuplex,int road_length,int road_channel);
     private:
-    int road_id=0,road_length=10000,road_speed=0,road_channel=0,road_from=0,road_to=0,road_isDuplex=1; 
+    int road_id=0,road_length=init_length,road_speed=1,road_channel=0,road_from=0,road_to=0,road_isDuplex=1; 
     int car_N=0;//路中车辆计数	
 	float beta=0;//拥堵系数，车数/路容量
-	//判题器相关
-	int N_now_car=0;//当前路中车辆数
-	struct Car_State car_state[2][n_max_channel][n_max_length_path];//每个方向每个通道每个车的状态
+
 };
-struct Car_State
-{
-	int  car_id=0;
-	int  car_order=0;//车辆是路中的第几个，距离终点最近的车次序是1
-	int  car_position=0;
-	int  car_speed=0;
-	int  car_priority=0;
-	bool StopOrWait=0;//stop--1，wait--0
-	int  car_S1=0;
-};
+
 //*****************************************************
 //#(id,from,to,speed,planTime, priority, preset)
 class Car
@@ -53,13 +43,15 @@ class Car
     {
 		public:
 		void set_num(int a,int b,int c,int d,int e);
+		void set_id(int a);
+		void set_road_id(int a,int b);
         void set_W_Dij(int a);
 		void set_pro_cross_num(int a);
 		void set_pro_path(int a);
 		int dis_num(int n );
         private:
-        int cross_id=0,cross_roadId_1=0,cross_roadId_2=0,cross_roadId_3=0,cross_roadId_4=0,cross_W_Dij= init_W;  //Dijkstra 算法的顶点标号大小，初始尽量大
-		int cross_roadId[4]={0};//数组表示，与上面重复定义，有时间在修改
+        int cross_id=0,cross_roadId_1=-1,cross_roadId_2=-1,cross_roadId_3=-1,cross_roadId_4=-1,cross_W_Dij= init_W;  //Dijkstra 算法的顶点标号大小，初始尽量大
+		int cross_roadId[4]={-1,-1,-1,-1};//数组表示，与上面重复定义，有时间在修改
 		int pro_cross_num=-10;//前驱顶点的指针
 		int pro_path=-10;//前驱路的id
     };

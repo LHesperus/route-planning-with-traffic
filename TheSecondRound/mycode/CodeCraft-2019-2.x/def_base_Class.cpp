@@ -11,6 +11,7 @@ void Road::set_num(int a,int b,int c,int d,int e,int f,int g)
 	road_isDuplex=g;
 }
 void Road::set_car_N(int a){car_N = a;};//车辆数
+void Road::set_id(int a){road_id=a;};//设置id
 float Road::set_beta(int car_N,int road_isDuplex,int road_length,int road_channel)
 	{
 	beta=(car_N+0.01)/((road_isDuplex+1)*road_length*road_channel+0.01);
@@ -96,6 +97,11 @@ void Cross::set_num(int a,int b,int c,int d,int e)
 			cross_roadId[2]=d;
 			cross_roadId[3]=e;
 		}
+void Cross::set_id(int a){cross_id=a;}
+void Cross::set_road_id(int a,int b)//设置各个方向路的id，a=0 1 2 3 
+{
+	cross_roadId[a]=b;
+}
 void Cross::set_W_Dij(int a){cross_W_Dij=a;}
 void Cross::set_pro_cross_num(int a){pro_cross_num=a;}
 void Cross::set_pro_path(int a){pro_path=a;}
