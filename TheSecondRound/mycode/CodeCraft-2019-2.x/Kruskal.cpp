@@ -25,6 +25,12 @@ void del_loop_gen_min_tree(Cross Cross_min_tree_group[n_cross],Road Road_min_tre
 		min_road_t=1.0*init_length;
 		for(int i=1;i<n_road;i++)//找到最短的路
 		{
+			//测试，遇到单向道，跳过
+			if(Road_group[i].dis_num(7)==0)
+			{
+				continue;
+			}
+			
 			//去掉已经找到的生成树的路和会形成环的路
 			for(int ii=0;ii<n_road;ii++)
 			{

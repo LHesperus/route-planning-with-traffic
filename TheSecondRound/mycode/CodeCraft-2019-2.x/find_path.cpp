@@ -1,8 +1,20 @@
 #include "find_path.h"
 //Dijkstra算法找到两点最短路径，返回数组
 //涉及汽车速度的Dij算法，并且加入了一些参数
-void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,int car_N,Cross Cross_group[n_cross],Road Road_group[n_road],Car Car_group[n_car])
+void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,int car_N,Cross Cross_group_temp[n_cross],Road Road_group_temp[n_road],Car Car_group[n_car])
 {	
+	Cross Cross_group[n_cross];
+	Road Road_group[n_road];
+	for(int i=0;i<n_cross;i++)
+	{
+		Cross_group[i]=Cross_group_temp[i];
+	}
+	for(int i=0;i<n_road;i++)
+	{
+		Road_group[i]=Road_group_temp[i];
+	}
+
+
 	int Cro_temp[n_cross]={0};//存储遍历的顶点
 	bool flag_c=0;
 	bool flag_s=0;//判断点是否在S中
@@ -114,14 +126,14 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式2,拥堵系数
 
 			path_weight=Road_group[road_i].dis_num(2);
-			cout<<"path_weight:"<<path_weight<<endl;
-			cout<<"(Cross_group[cross_N].dis_num(6):"<<Cross_group[cross_N].dis_num(6)<<endl;
-			cout<<"Cross_group[cross_N_next].dis_num(6)"<<Cross_group[cross_N_next].dis_num(6)<<endl;
+			//cout<<"path_weight:"<<path_weight<<endl;
+			//cout<<"(Cross_group[cross_N].dis_num(6):"<<Cross_group[cross_N].dis_num(6)<<endl;
+			//cout<<"Cross_group[cross_N_next].dis_num(6)"<<Cross_group[cross_N_next].dis_num(6)<<endl;
 			if((Cross_group[cross_N].dis_num(6)+path_weight)<=Cross_group[cross_N_next].dis_num(6))//判断顶点权重加上边长后 与 边终点路口权重的大小
 			{
 				Cross_group[cross_N_next].set_W_Dij(Cross_group[cross_N].dis_num(6)+path_weight);////更新路口权重
 				Cross_group[cross_N_next].set_pro_cross_num(Cross_group[cross_N].dis_num(1));//更新前驱
-				cout<<Cross_group[cross_N_next].dis_num(1)<<":"<<Cross_group[cross_N_next].dis_num(7)<<endl;
+				//cout<<Cross_group[cross_N_next].dis_num(1)<<":"<<Cross_group[cross_N_next].dis_num(7)<<endl;
 				Cross_group[cross_N_next].set_pro_path(Cross_group[cross_N].dis_num(j+2));
 			}
 		}
@@ -167,7 +179,7 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 				if(Cross_group[i].dis_num(7)!=-100)//推到起点
 				{
 					p_end_temp=Cross_group[i].dis_num(7);
-					cout<<"p_end_temp"<<p_end_temp<<endl;
+					//cout<<"p_end_temp"<<p_end_temp<<endl;
 					//cout<<Cross_group[i].dis_num(8)<<endl;
 				}
 				else
@@ -196,10 +208,10 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			}			
 		}	
 	}
-	for(int i=0;i<20;i++)
-	{
-		cout<<i<<":"<<path_b_a[i]<<endl;
-	}
+	//for(int i=0;i<20;i++)
+	//{
+	//	cout<<i<<":"<<path_b_a[i]<<endl;
+	//}
 	
 	//将路径变成正向
 	for(int i=0;i< n_path;i++)
@@ -219,10 +231,10 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			break;
 		}	
 	}
-	for(int i=0;i<20;i++)
-	{
-		cout<<i<<":"<<path_a_b[i]<<endl;
-	}
+//for(int i=0;i<20;i++)
+//{
+//	cout<<i<<":"<<path_a_b[i]<<endl;
+//}
 }
 
 //判断有没有环
