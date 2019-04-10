@@ -374,7 +374,7 @@ pre_ans_num++;
 }
 fin3.clear();
 fin3.close();
-cout<<PresentAnswer_group[2].dis_carid()<<endl;//测试用
-cout<<PresentAnswer_group[2].dis_pre_time()<<endl;//测试用
-cout<<PresentAnswer_group[2].dis_pre_path(1)<<endl;//测试用
+//cout<<PresentAnswer_group[2].dis_carid()<<endl;//测试用
+//cout<<PresentAnswer_group[2].dis_pre_time()<<endl;//测试用
+//cout<<PresentAnswer_group[2].dis_pre_path(1)<<endl;//测试用
 }

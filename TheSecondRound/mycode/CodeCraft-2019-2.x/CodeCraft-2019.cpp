@@ -54,48 +54,13 @@ read_file(carPath,roadPath,crossPath,presetAnswerPath,Cross_group,Road_group,Car
 //***********************************************************
 	// TODO:process
 
-del_loop_gen_min_tree(Cross_min_tree_group,Road_min_tree_group,Cross_group,Road_group);//最小生成树算法
-//ofstream outf;
-//outf.open(answerPath);	
-
-//for(int i=1;i<n_cross;i++)
-//{
-//	outf<<'(';
-//	outf<<Cross_min_tree_group[i].dis_num(1)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(2)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(3)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(4)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(5)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(6)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(7)<<',';
-//	outf<<Cross_min_tree_group[i].dis_num(8);
-//	outf<<')'<<endl;
-//
-//}
-//for(int i=1;i<n_road;i++)
-//{
-//	outf<<'(';
-//	outf<<Road_min_tree_group[i].dis_num(1)<<',';
-//	outf<<Road_min_tree_group[i].dis_num(2)<<',';
-//	outf<<Road_min_tree_group[i].dis_num(3)<<',';
-//	outf<<Road_min_tree_group[i].dis_num(4)<<',';
-//	outf<<Road_min_tree_group[i].dis_num(5)<<',';
-//	outf<<Road_min_tree_group[i].dis_num(6)<<',';
-//	outf<<Road_min_tree_group[i].dis_num(7);
-//	outf<<')'<<endl;
-//
-//}
-//
-//	outf.close();
+//del_loop_gen_min_tree(Cross_min_tree_group,Road_min_tree_group,Cross_group,Road_group);//最小生成树算法
 
 
-//int path_a_b[n_path]={0};
-//min_time_Dijkstra(1271,740,path_a_b,Car_group[70].dis_num(4),70,Cross_group,Road_group,Car_group);
-//min_time_Dijkstra(1271,740,path_a_b,Car_group[70].dis_num(4),70,Cross_min_tree_group,Road_min_tree_group,Car_group);
 	int path_a_b[n_path]={0};
 	int p_start=0,p_end=0;
 	int time_step=0;//发车时间调整参数
-
+    
 	// TODO:write output file
 	ofstream outf; 
 	outf.open(answerPath);
@@ -108,23 +73,31 @@ del_loop_gen_min_tree(Cross_min_tree_group,Road_min_tree_group,Cross_group,Road_
 		}
 		p_start=Car_group[j].dis_num(2);
 		p_end = Car_group[j].dis_num(3);
-
-		if(Is_have_loop(p_start,p_end,Cross_min_tree_group,Road_min_tree_group))//在最小生成数中存在起点到终点的路
-		{
-			min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[j].dis_num(4),j,Cross_min_tree_group,Road_min_tree_group,Car_group);
-		}
-		else
-		{
-			//continue;
-			min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[j].dis_num(4),j,Cross_group,Road_group,Car_group);
-		}
-		//min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[j].dis_num(4),Car_group[j].dis_num(6),Cross_group,Road_group,Car_group);
+    
+		//if(Is_have_loop(p_start,p_end,Cross_min_tree_group,Road_min_tree_group))//在最小生成数中存在起点到终点的路
+		//{
+		//	min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[j].dis_num(4),j,Cross_min_tree_group,Road_min_tree_group,Car_group);
+		//}
+		//else
+		//{
+		//	//continue;
+		//	min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[j].dis_num(4),j,Cross_group,Road_group,Car_group);
+		//}
+		min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[j].dis_num(4),j,Cross_group,Road_group,Car_group);
+		//for(int i=1;i<20;i++)
+		//{
+		//	//cout<<Road_group[i].dis_num(8)<<endl;
+		//	cout<<Road_group[i].dis_beta()<<endl;
+		//}
+		
+		
+		
 		
 		outf<<'(';
 		outf<<Car_group[j].dis_num(1)<<',';
-		time_step=int(j/2000);
-
-		outf<<(Car_group[j].dis_num(5)+50* time_step + 750);
+		time_step=int(j/3000);
+    
+		outf<<(Car_group[j].dis_num(5)+50* time_step + 800);
 		for(int i=0;path_a_b[i]!=0;i++)
 		{
 				outf<<','<<path_a_b[i];

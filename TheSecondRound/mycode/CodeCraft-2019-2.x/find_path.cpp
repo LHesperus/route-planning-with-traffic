@@ -110,30 +110,15 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 				min_speed = Road_group[road_i].dis_num(3);
 			}
 			
-			//if(Road_group[road_i].dis_num(8)*n_road>sum_path)//判断当前道路汽车数是否大于道路平均汽车数
-			//{
-			//	W_block=10;
-			//}
-			//else
-			//{
-			//	W_block=1;
-			//}
-			//path_weight=int(Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4))\
-			*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
-			*W_block;//抽象的权重计算公式1
-			//path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
+
+			path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
 			*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
 			*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式2,拥堵系数
-
-			path_weight=Road_group[road_i].dis_num(2);
-			//cout<<"path_weight:"<<path_weight<<endl;
-			//cout<<"(Cross_group[cross_N].dis_num(6):"<<Cross_group[cross_N].dis_num(6)<<endl;
-			//cout<<"Cross_group[cross_N_next].dis_num(6)"<<Cross_group[cross_N_next].dis_num(6)<<endl;
+		//cout<<"dis_beta"<<Road_group[road_i].dis_beta()<<endl;
 			if((Cross_group[cross_N].dis_num(6)+path_weight)<=Cross_group[cross_N_next].dis_num(6))//判断顶点权重加上边长后 与 边终点路口权重的大小
 			{
 				Cross_group[cross_N_next].set_W_Dij(Cross_group[cross_N].dis_num(6)+path_weight);////更新路口权重
 				Cross_group[cross_N_next].set_pro_cross_num(Cross_group[cross_N].dis_num(1));//更新前驱
-				//cout<<Cross_group[cross_N_next].dis_num(1)<<":"<<Cross_group[cross_N_next].dis_num(7)<<endl;
 				Cross_group[cross_N_next].set_pro_path(Cross_group[cross_N].dis_num(j+2));
 			}
 		}
@@ -175,12 +160,9 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 		{
 			if(Cross_group[i].dis_num(1)==p_end_temp)
 			{
-				//cout<<Cross_group[i].dis_num(8)<<endl;
 				if(Cross_group[i].dis_num(7)!=-100)//推到起点
 				{
 					p_end_temp=Cross_group[i].dis_num(7);
-					//cout<<"p_end_temp"<<p_end_temp<<endl;
-					//cout<<Cross_group[i].dis_num(8)<<endl;
 				}
 				else
 				{
@@ -189,15 +171,16 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 					//break;
 				}
 				path_b_a[j]=Cross_group[i].dis_num(8);//注意这里在到起点时会存入-100，便于路径反向
-				//cout<<"path_b_a[j]"<<path_b_a[j]<<endl;
 				//对应的路增加一辆车
 				for(int ii=1;ii<n_road;ii++)
 				{
 					if(Road_group[ii].dis_num(1)==Cross_group[i].dis_num(8))
 					{
-						Road_group[ii].set_car_N(Road_group[ii].dis_num(8)+1);
-						Road_group[ii].set_beta(Road_group[ii].dis_num(8),Road_group[ii].dis_num(7),Road_group[ii].dis_num(2),Road_group[ii].dis_num(4));
-					}
+						//Road_group[ii].set_car_N(Road_group[ii].dis_num(8)+1);
+						//Road_group[ii].set_beta(Road_group[ii].dis_num(8),Road_group[ii].dis_num(7),Road_group[ii].dis_num(2),Road_group[ii].dis_num(4));
+						Road_group_temp[ii].set_car_N(Road_group[ii].dis_num(8)+1);
+						Road_group_temp[ii].set_beta(Road_group[ii].dis_num(8),Road_group[ii].dis_num(7),Road_group[ii].dis_num(2),Road_group[ii].dis_num(4));
+					}   
 				}
 				break;
 			}
@@ -208,10 +191,7 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			}			
 		}	
 	}
-	//for(int i=0;i<20;i++)
-	//{
-	//	cout<<i<<":"<<path_b_a[i]<<endl;
-	//}
+
 	
 	//将路径变成正向
 	for(int i=0;i< n_path;i++)
@@ -231,10 +211,7 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 			break;
 		}	
 	}
-//for(int i=0;i<20;i++)
-//{
-//	cout<<i<<":"<<path_a_b[i]<<endl;
-//}
+
 }
 
 //判断有没有环
@@ -398,60 +375,4 @@ int Is_have_loop(int p_start,int p_end,Cross Cross_group_temp[n_cross],Road Road
 		k++;
 		Cro_temp[k]=min_W_N;
 	}	
-/* 	//从终点倒推出路径
-	int path_b_a[n_path]={0};//路径反顺序
-	int p_end_temp=0;
-	p_end_temp=p_end;
-	flag_s=0;//不新声明了，反正和上面不相互影响
-	for(int j=0;j<n_path;j++)//参数需要修改，与path一致
-	{
-		for(int i=0;i<n_cross;i++)//参数需要修改，与路口数量匹配
-		{
-			if(Cross_group[i].dis_num(1)==p_end_temp)
-			{
-				if(Cross_group[i].dis_num(7)!=-10)//推到起点
-				{
-					p_end_temp=Cross_group[i].dis_num(7);
-				}
-				else
-				{
-					flag_s=0;
-					break;
-				}
-				path_b_a[j]=Cross_group[i].dis_num(8);//注意这里在到起点时会存入-100，便于路径反向
-				//对应的路增加一辆车
-				for(int ii=1;ii<n_road;ii++)
-				{
-					if(Road_group[ii].dis_num(1)==Cross_group[i].dis_num(8))
-					{
-						Road_group[ii].set_car_N(Road_group[ii].dis_num(8)+1);
-						Road_group[ii].set_beta(Road_group[ii].dis_num(8),Road_group[ii].dis_num(7),Road_group[ii].dis_num(2),Road_group[ii].dis_num(4));
-					}
-				}
-				break;
-			}
-			if(flag_s==1)//到起点，结束循环
-			{
-				flag_s=0;
-				break;
-			}			
-		}	
-	}
-	//将路径变成正向
-	for(int i=0;i< n_path;i++)
-	{
-		path_a_b[i]=0;
-	}
-	for(int i=0;i< n_path;i++)//参数需要修改，与path一致
-	{
-		if(path_b_a[i]==-100)//搜索到起点 -100 与上面数一致
-		{
-			for(int j=0;j<i;j++)
-			{
-				path_a_b[j]=path_b_a[i-j-1];
-			}
-			Car_group[car_N].set_path_l(i);//该车走的路径长度
-			break;
-		}	
-	} */
 }
