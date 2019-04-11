@@ -1,7 +1,7 @@
 #include "find_path.h"
 //Dijkstra算法找到两点最短路径，返回数组
 //涉及汽车速度的Dij算法，并且加入了一些参数
-void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,int car_N,Cross Cross_group_temp[n_cross],Road Road_group_temp[n_road],Car Car_group[n_car])
+void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,int car_N,Cross Cross_group_temp[n_cross],Road Road_group_temp[n_road],Car Car_group[n_car],int mode)
 {	
 	Cross Cross_group[n_cross];
 	Road Road_group[n_road];
@@ -110,10 +110,35 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 				min_speed = Road_group[road_i].dis_num(3);
 			}
 			
-
-			path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
-			*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
-			*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式2,拥堵系数
+			switch(mode)//采取哪种权重计算方法
+			{
+				case 1:
+						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
+						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
+						*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式1,拥堵系数
+						//cout<<path_weight<<endl;
+						break;
+				case 2:
+						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
+						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
+						*Road_group[road_i].dis_beta()+1)*(Road_group[road_i].dis_num(9)/10+1);//抽象的权重计算公式2,考虑预置车,控制权重大小，防止路口权越界
+						//cout<<path_weight<<endl;
+						break;	
+				case 3://无拥堵系数,非预置优先车用，考虑了每段非预置车的路径
+						path_weight=int(10*Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4)\
+						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)*(Road_group[road_i].dis_num(9)+1)+1);//抽象的权重计算公式3
+						//cout<<path_weight<<endl;
+						break;
+				case 4:
+						path_weight=int(1000*Road_group[road_i].dis_beta());
+						//cout<<path_weight<<endl;
+						break;
+				default:
+						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
+						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
+						*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式2,拥堵系数
+						break;				
+			}
 		//cout<<"dis_beta"<<Road_group[road_i].dis_beta()<<endl;
 			if((Cross_group[cross_N].dis_num(6)+path_weight)<=Cross_group[cross_N_next].dis_num(6))//判断顶点权重加上边长后 与 边终点路口权重的大小
 			{

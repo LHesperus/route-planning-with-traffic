@@ -12,11 +12,11 @@ void Road::set_num(int a,int b,int c,int d,int e,int f,int g)
 }
 void Road::set_car_N(int a){car_N = a;};//车辆数
 void Road::set_id(int a){road_id=a;};//设置id
-float Road::set_beta(int car_N,int road_isDuplex,int road_length,int road_channel)
+void Road::set_beta(int car_N,int road_isDuplex,int road_length,int road_channel)
 	{
 	beta=(car_N+0.01)/((road_isDuplex+1)*road_length*road_channel+0.01);
-	return beta;
 	};
+void Road::set_Pre_car_N(int a){Pre_car_N=a;};//预置车辆数
 int Road::dis_num(int n)//测试用
 {
 	switch(n)
@@ -37,6 +37,8 @@ int Road::dis_num(int n)//测试用
 			return road_isDuplex;
 		case 8:
 			return car_N;
+		case 9:
+			return Pre_car_N;
         default:
             return -1;
 	}
