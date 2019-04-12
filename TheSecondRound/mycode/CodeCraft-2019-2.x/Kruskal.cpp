@@ -46,6 +46,7 @@ void del_loop_gen_min_tree(Cross Cross_min_tree_group[n_cross],Road Road_min_tre
 				flag_tl=0;
 				continue;
 			}
+//在这里修改可以生成不同种类最小生成树
 			road_t=Road_group[i].dis_num(2)*1.0/Road_group[i].dis_num(3);//之后再考虑通道数
 			if(road_t<=min_road_t)
 			{
@@ -111,6 +112,8 @@ void del_loop_gen_min_tree(Cross Cross_min_tree_group[n_cross],Road Road_min_tre
 											Road_group[road_i].dis_num(5),\
 											Road_group[road_i].dis_num(6),\
 											Road_group[road_i].dis_num(7));
+		//将对应路标记为最小树路
+		Road_group[road_i].set_min_tree(1);
 		//将对应路的两个路口复制给最小生成树
 		Cross_min_tree_group[cross_from_i].set_id(Cross_group[cross_from_i].dis_num(1));
 		Cross_min_tree_group[cross_from_i].set_road_id(cross_from_dir,road_id);

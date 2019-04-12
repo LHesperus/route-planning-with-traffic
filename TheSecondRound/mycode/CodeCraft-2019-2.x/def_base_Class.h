@@ -20,12 +20,14 @@ class Road
 	void set_beta(int car_N,int road_isDuplex,int road_length,int road_channel);
 	void set_Pre_car_N(int a);
 	void set_straight(int a);
+	void set_min_tree(int a);
     private:
     int road_id=0,road_length=init_length,road_speed=1,road_channel=0,road_from=0,road_to=0,road_isDuplex=1; 
     int car_N=0;//路中车辆计数	
 	float beta=0;//拥堵系数，车数/路容量
 	int Pre_car_N=0;//有多少辆车经过这条路
 	int if_straight=1;//直行就是1
+	int if_min_tree=6;//是否是最小树，是就为4
 
 };
 

@@ -133,7 +133,9 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
 						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
 						*Road_group[road_i].dis_beta()+1);//抽象的权重计算公式1,拥堵系数
-						//cout<<path_weight<<endl;
+						//cout<<"1:"<< path_weight<<endl;
+						//cout<<"2:"<< abs(car_speed-Road_group[road_i].dis_num(3))+1<<endl;
+						//cout<<"3:"<<Road_group[road_i].dis_beta() <<endl;
 						break;
 				case 2:
 						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
@@ -152,6 +154,25 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 						break;
 				case 5://考虑直行和拐弯
 						path_weight=Road_group[road_i].dis_num(10);
+						break;
+				case 6:
+						path_weight=int(1.0*Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4)*(abs(car_speed-Road_group[road_i].dis_num(3))+1));
+						break;
+				case 7:
+						path_weight=int(1.0*Road_group[road_i].dis_num(2)/min_speed/Road_group[road_i].dis_num(4)*(abs(car_speed-Road_group[road_i].dis_num(3))+1))+Road_group[road_i].dis_num(8);
+						break;
+				case 8://考虑最小生成树
+						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
+						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
+						*Road_group[road_i].dis_beta()*Road_group[road_i].dis_num(11)+1);//
+						//cout<<"1:"<< path_weight<<endl;
+						//cout<<"2:"<< Road_group[road_i].dis_num(11)<<endl;
+						//cout<<"3:"<<Road_group[road_i].dis_beta() <<endl;
+						break;
+				case 9://仅考虑时间
+						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed);
+						//cout<<"1:"<< path_weight<<endl;
+						break;
 				default:
 						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
 						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\
@@ -361,8 +382,8 @@ int Is_have_loop(int p_start,int p_end,Cross Cross_group_temp[n_cross],Road Road
 			}
 
 
-			path_weight=int(10.0*Road_group[road_i].dis_num(2)/Road_group[road_i].dis_num(3));//权重计算公式3：路速度比上路限速
-
+			//path_weight=int(100.0*Road_group[road_i].dis_num(2)/Road_group[road_i].dis_num(3)/Road_group[road_i].dis_num(4));//权重计算公式3：路速度比上路限速再比上通道
+			path_weight=Road_group[road_i].dis_num(2);
 			
 			if((Cross_group[cross_N].dis_num(6)+path_weight)<=Cross_group[cross_N_next].dis_num(6))//判断顶点权重加上边长后 与 边终点路口权重的大小
 			{

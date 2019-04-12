@@ -12,4 +12,4 @@
 #define n_max_length_path   100      //最长路长 
 #define n_max_channel		6        //所有路最大通道数
 #define preset_last_time    756      //最后一辆预置车的发车时间
-#define pre_car_in50s		80		 //50s内预置车辆数
+//#define pre_car_in50s		800		 //50s内预置车辆数

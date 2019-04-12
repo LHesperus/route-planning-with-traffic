@@ -18,6 +18,7 @@ void Road::set_beta(int car_N,int road_isDuplex,int road_length,int road_channel
 	};
 void Road::set_Pre_car_N(int a){Pre_car_N=a;};//预置车辆数
 void Road::set_straight(int a){if_straight=a;};
+void Road::set_min_tree(int a){if_min_tree=a;};
 int Road::dis_num(int n)//测试用
 {
 	switch(n)
@@ -42,6 +43,8 @@ int Road::dis_num(int n)//测试用
 			return Pre_car_N;
 		case 10:
 			return if_straight;
+		case 11:
+			return if_min_tree;
         default:
             return -1;
 	}
