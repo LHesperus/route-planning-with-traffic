@@ -168,16 +168,22 @@ for(int i=1;i<51;i++)
 	}
 	
 	//非优先非预置
-	int car_n_group=2000;//普通车的发车批量
+	int car_n_group=2600;//普通车的发车批量
+	//car_n_group=800;
+	int car_n_in_pre=8000;//预置车中塞进去的普通车数
+	int time_car=756;
+	int car_i_temp[n_car]={0};
 	for(int j=1,jj=0;Car_group[j].dis_num(1)!=0;j++)
 	{	
-		//考虑将一部分车放在预置车里
-		
 		if(Car_group[j].dis_num(8)==1||Car_group[j].dis_num(7)==1)//跳过优先车和预置车
 		{
 			continue;
 		}
 		jj++;//表示遍历到车
+		car_i_temp[jj]=j;
+		//考虑将一部分车放在预置车里
+
+			
 		p_start=Car_group[j].dis_num(2);
 		p_end = Car_group[j].dis_num(3);
     			
@@ -187,7 +193,7 @@ for(int i=1;i<51;i++)
 		outf<<Car_group[j].dis_num(1)<<',';
 		time_step=int(jj/car_n_group);//这里的jj是表示有jj辆车过去了，不能用j
     
-		outf<<(Car_group[j].dis_num(5)+50* time_step + 800);
+		outf<<(Car_group[j].dis_num(5)+50* time_step + time_car);
 		for(int i=0;path_a_b[i]!=0;i++)
 		{
 				outf<<','<<path_a_b[i];
@@ -200,10 +206,11 @@ for(int i=1;i<51;i++)
 		}
 		//早出发的车 可能已经走完了，去掉早出发车的路径数	
 		if(jj>car_n_group)
-		{			
-			//早出发车的路径,参数需要修改
-			Answer_group[j-car_n_group].dis_path(path_temp);
+		{
 			
+			//早出发车的路径,参数需要修改
+			//Answer_group[car_i_temp[jj-car_n_group]].dis_path(path_temp);
+			Answer_group[j-car_n_group].dis_path(path_temp);
 			for(int iii=0;path_temp[iii]!=0;iii++)
 			{
 				for(int ii=1;ii<n_road;ii++)
@@ -217,6 +224,15 @@ for(int i=1;i<51;i++)
 				}	
 			}		
 		}
+		//if(jj>=car_n_in_pre)//发完预置车
+		//{
+		//	if(jj/car_n_in_pre==1)//第一批
+		//	{
+		//		
+		//	}
+		//	car_n_group=2600;
+		//	time_car=800;
+		//}
 	}
 	outf.close();
 
