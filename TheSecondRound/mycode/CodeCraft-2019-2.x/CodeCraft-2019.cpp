@@ -108,7 +108,7 @@ read_file(carPath,roadPath,crossPath,presetAnswerPath,Cross_group,Road_group,Car
 	pri_n_group=pri_npre*pri_span/preset_last_time;
 cout<<pri_n_group<<endl;
 	//先跑优先非预置车
-	pri_n_group=330;
+	pri_n_group=33;
 	for(int j=0;pri_car_i[j]!=0;j++)
 	{
 		if(j%pri_n_group==0)//每隔一段时间记录一批预置车的路径
@@ -121,26 +121,24 @@ cout<<pri_n_group<<endl;
 			//再记录数据
 			for(int i=1,pre_i=0;i<pre_car_in50s;i++)
 			{
-				pre_i=i+j%pri_n_group*pre_car_in50s;//[1 pre_car_in50s][pre_car_in50s 2pre_car_in50s]……
+				pre_i=i+j/pri_n_group*pre_car_in50s;//[1 pre_car_in50s][pre_car_in50s 2pre_car_in50s]……
 				if(pre_i>=n_car)
 				{
 					break;
 				}
 				//删掉上一批影响拥堵系数的路径
-				if(j%pri_n_group*pre_car_in50s!=0)
+				if(j/pri_n_group>=10)
 				{
-					for(int ii=0;PresentAnswer_group[i+(j%pri_n_group-1)*pre_car_in50s].dis_pre_path(ii)!=0;ii++)//上批预置车的每个车的每条路
+					for(int ii=0;PresentAnswer_group[i+(j/pri_n_group-10)*pre_car_in50s].dis_pre_path(ii)!=0;ii++)//上批预置车的每个车的每条路
 					{
 						for(int iii=1;iii<n_road;iii++)//找到对应的路id
 						{
-							if(j%pri_n_group*pre_car_in50s!=0)
+							if(PresentAnswer_group[i+(j/pri_n_group-10)*pre_car_in50s].dis_pre_path(ii)==Road_group[iii].dis_num(1))
 							{
-								if(PresentAnswer_group[i+(j%pri_n_group-1)*pre_car_in50s].dis_pre_path(ii)==Road_group[iii].dis_num(1))
-								{
-									Road_group[iii].set_car_N(Road_group[iii].dis_num(8)-1);
-									Road_group[iii].set_beta(Road_group[iii].dis_num(8),Road_group[iii].dis_num(7),Road_group[iii].dis_num(2),Road_group[iii].dis_num(4));					
-								}	
-							}						
+								Road_group[iii].set_car_N(Road_group[iii].dis_num(8)-1);
+								Road_group[iii].set_beta(Road_group[iii].dis_num(8),Road_group[iii].dis_num(7),Road_group[iii].dis_num(2),Road_group[iii].dis_num(4));					
+							}	
+						
 						}					
 					}					
 				}
@@ -163,7 +161,7 @@ cout<<pri_n_group<<endl;
 		p_start=Car_group[pri_car_i[j]].dis_num(2);
 		p_end = Car_group[pri_car_i[j]].dis_num(3);
 		
-		min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[pri_car_i[j]].dis_num(4),pri_car_i[j],Cross_group,Road_group,Car_group,4);
+		min_time_Dijkstra(p_start,p_end,path_a_b,Car_group[pri_car_i[j]].dis_num(4),pri_car_i[j],Cross_group,Road_group,Car_group,5);
 		
 		outf<<'(';
 		outf<<Car_group[pri_car_i[j]].dis_num(1)<<',';
@@ -172,7 +170,7 @@ cout<<pri_n_group<<endl;
 		//time_step=int(j/pri_n_group);
 		//set_time=Car_group[pri_car_i[j]].dis_num(5)+pri_span* time_step;
 		time_step=int(j/pri_n_group);
-		set_time=Car_group[pri_car_i[j]].dis_num(5)+50* time_step;
+		set_time=Car_group[pri_car_i[j]].dis_num(5)+5* time_step;
 		outf<<set_time;
 		for(int i=0;path_a_b[i]!=0;i++)
 		{
@@ -238,7 +236,7 @@ cout<<pri_n_group<<endl;
 		outf<<Car_group[j].dis_num(1)<<',';
 		time_step=int(jj/2000);//这里的jj是表示有jj辆车过去了，不能用j
     
-		outf<<(Car_group[j].dis_num(5)+50* time_step + 1200);
+		outf<<(Car_group[j].dis_num(5)+50* time_step + 1000);
 		for(int i=0;path_a_b[i]!=0;i++)
 		{
 				outf<<','<<path_a_b[i];

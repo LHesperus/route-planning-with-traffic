@@ -44,12 +44,20 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 	{
 		min_W= init_W;
 		min_W_N=0;
-		for (int j=0;j<4;j++)   //4条路
+		for (int j=0,pro_i=0;j<4;j++)   //4条路
 		{
-			if(Cross_group[cross_N].dis_num(j+2)<0)//该方向无边
+			if(Cross_group[cross_N].dis_num(j+2)<0||Cross_group[cross_N].dis_num(j+2)==Cross_group[cross_N].dis_num(8))//该方向无边或是前驱边
 			{
 				continue;
 			}
+			for(int i=0;i<4;i++)
+			{
+				if(Cross_group[cross_N].dis_num(8)==Cross_group[cross_N].dis_num(i+2))//找到前驱的方向
+				{
+					pro_i=i;
+				}				
+			}
+
 			for (int i=1;i<n_road;i++)   
 			{
 				if (Road_group[i].dis_num(1)==Cross_group[cross_N].dis_num(j+2))//找到路口相连边的id
@@ -57,6 +65,15 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 					if((Road_group[i].dis_num(7)==0&&Road_group[i].dis_num(5)==Cross_group[cross_N].dis_num(1))||(Road_group[i].dis_num(7)==1))//单相且from为路口，或双向
 					{
 						road_i =i;
+						if((j+2)%4==pro_i)//当前方向为直行
+						{
+							Road_group[road_i].set_straight(1);
+						}
+						else
+						{
+							Road_group[road_i].set_straight(3);//
+						}
+						//cout<<Road_group[road_i].dis_num(10)<<endl;;
 						for (int ii=1;ii< n_cross;ii++)
 						{
 							//找到对应边终点的路口id,排除下一个顶点与当前定点相同的情况
@@ -133,6 +150,8 @@ void min_time_Dijkstra(int p_start,int p_end,int path_a_b[n_path],int car_speed,
 						path_weight=int(1000*Road_group[road_i].dis_beta());
 						//cout<<path_weight<<endl;
 						break;
+				case 5://考虑直行和拐弯
+						path_weight=Road_group[road_i].dis_num(10);
 				default:
 						path_weight=int(100*Road_group[road_i].dis_num(2)/min_speed\
 						*(abs(car_speed-Road_group[road_i].dis_num(3))+1)\

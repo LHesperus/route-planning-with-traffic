@@ -17,6 +17,7 @@ void Road::set_beta(int car_N,int road_isDuplex,int road_length,int road_channel
 	beta=(car_N+0.01)/((road_isDuplex+1)*road_length*road_channel+0.01);
 	};
 void Road::set_Pre_car_N(int a){Pre_car_N=a;};//预置车辆数
+void Road::set_straight(int a){if_straight=a;};
 int Road::dis_num(int n)//测试用
 {
 	switch(n)
@@ -39,6 +40,8 @@ int Road::dis_num(int n)//测试用
 			return car_N;
 		case 9:
 			return Pre_car_N;
+		case 10:
+			return if_straight;
         default:
             return -1;
 	}
